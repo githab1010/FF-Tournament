@@ -267,6 +267,36 @@ h2{
 <div class="footer">
   © FF Tournament • All Rights Reserved
 </div>
+<script>
+const SUPABASE_URL = "https://uqpylhdvotfsscvsbgbw.supabase.co";
+const SUPABASE_KEY = "sb_publishable__GGV3DsvWHPCg3EodpvmJQ_faDa-ScT";
 
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function loadRoomDetails() {
+  const { data, error } = await supabaseClient
+    .from("matches")
+    .select("room_id, password")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Room details error:", error);
+    return;
+  }
+
+  document.getElementById("roomId").textContent =
+    data?.room_id || "Not available yet";
+
+  document.getElementById("roomPassword").textContent =
+    data?.password || "Not available yet";
+}
+
+loadRoomDetails();
+</script>
 </body>
   </html>
